@@ -18,9 +18,10 @@ body {
 }
 
 .chat-container {
-    width: 100%;
-    max-width: 450px;
-    height: 85vh;
+    width: 100vw;
+    max-width: none;
+    height: 100vw;
+    margin: 0;
     background: var(--white);
     display: flex;
     flex-direction: column;
@@ -62,7 +63,7 @@ header p {
 
 /* Message Bubbles */
 .message {
-    max-width: 80%;
+    max-width: 70%;
     padding: 12px 16px;
     border-radius: 18px;
     font-size: 0.95rem;
@@ -119,7 +120,9 @@ header p {
 
 input {
     flex: 1;
-    padding: 12px;
+    width: 100%;
+    padding: 20px;
+    display: flex;
     border: 2px solid #eee;
     border-radius: 25px;
     outline: none;
