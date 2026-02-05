@@ -28,15 +28,15 @@ def search_knowledge_base(query):
     relevant_lines = [line for line in KNOWLEDGE_BASE.split("\n") 
                       if any(word in line.lower() for word in keywords)]
     return "\n".join(relevant_lines[:15])
-"""
+
 def ai_generate_answer(question, context):
     if not api_key:
         return "System Error: API Key missing in Vercel settings."
     try:
         # Using the standard stable name
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         
-        prompt = f
+        prompt = f"""
         You are ChatDIS, the official assistant for Dunes International School.
         
         CONTEXT:
@@ -48,7 +48,7 @@ def ai_generate_answer(question, context):
         INSTRUCTIONS:
         1. Answer based on the context.
         2. Be polite and professional.
-        
+        """
         
         response = model.generate_content(prompt)
         return response.text
@@ -69,7 +69,8 @@ def ai_generate_answer(question, context):
         return response.text
     except Exception as e:
         return f"Still Error: {str(e)}"
-        
+"""
+
 @app.route("/")
 def home():
     return render_template("index.html")
