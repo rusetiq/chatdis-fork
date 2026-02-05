@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ChatDIS</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="chatbox">
+    <h2>ChatDIS</h2>
+    <p class="subtitle">School Information Assistant</p>
+
+    <div id="chat"></div>
+
+    <input
+        type="text"
+        id="question"
+        placeholder="Ask a school-related question..."
+    />
+
+    <button onclick="askQuestion()">Ask</button>
+
+    <p class="disclaimer">
+        ChatDIS provides general school information only.
+    </p>
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
