@@ -83,6 +83,31 @@ header p {
     border-bottom-left-radius: 2px;
 }
 
+/* Quick Action Buttons Area */
+.quick-actions {
+    padding: 1rem 2rem;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: #fafafa;
+}
+
+.action-btn {
+    background: white;
+    border: 1px solid #800000;
+    color: #800000;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.action-btn:hover {
+    background: #800000;
+    color: white;
+}
+
 /* Input Area */
 .input-area {
     padding: 20px;
