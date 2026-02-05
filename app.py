@@ -62,7 +62,7 @@ def ai_generate_answer(question, context):
             return f"AI Error: {str(e)}"
 """
 def ai_generate_answer(question, context):
-    model = genai.GenerativeModel('	gemini-2.5-flash')
+    model = genai.GenerativeModel('gemini-2.5-flash')
     try:
         # Just a simple test
         response = model.generate_content(f"You are a school assistant. {question}")
@@ -70,14 +70,6 @@ def ai_generate_answer(question, context):
     except Exception as e:
         return f"Still Error: {str(e)}"
         
-def ai_generate_answer(question, context):
-    model = genai.GenerativeModel('gemini-1.5-flash')
-    try:
-        # Just a simple test
-        response = model.generate_content(f"You are a school assistant. {question}")
-        return response.text
-    except Exception as e:
-        return f"Still Error: {str(e)}"
 @app.route("/")
 def home():
     return render_template("index.html")
