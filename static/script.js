@@ -64,3 +64,9 @@ document.getElementById("question").addEventListener("keypress", function (e) {
         askQuestion();
     }
 });
+
+// Function for Quick Action buttons
+function quickAsk(text) {
+    document.getElementById("question").value = text;
+    askQuestion();
+}
