@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify, render_template
 from dotenv import load_dotenv
 import os
+import google.generativeai as genai
 
 # Load environment variables
 load_dotenv()
 
-API_KEY = os.getenv("API_KEY")
+genai.configure(api_key=os.getenv("API_KEY"))
 
 app = Flask(__name__)
 
@@ -24,11 +25,36 @@ def search_knowledge_base(query):
     return "\n".join(relevant_lines[:15])
 
 def ai_generate_answer(question, context):
-    return (
-        "Based on the available school information:\n\n"
-        f"{context}\n\n"
-        "If you need more details, please contact the school office."
-    )
+    """
+    This function sends the prompt to the real Gemini AI.
+    """
+    try:
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        # We give the AI a "Persona" so it knows it's at Dunes
+        prompt = f"""
+        You are ChatDIS, the official digital assistant for Dunes International School. 
+        Use the following verified school information to answer the user's question.
+        
+        SCHOOL INFORMATION:
+        {context}
+        
+        USER QUESTION: 
+        {question}
+        
+        INSTRUCTIONS:
+        - Be polite, professional, and welcoming.
+        - Use "Dunes International School" context.
+        - If the information is not in the context, politely say you don't know and suggest contacting the school office.
+        - Keep the answer concise.
+        """
+        
+        response = model.generate_content(prompt)
+        return response.text
+        
+    except Exception as e:
+        print(f"AI Error: {e}")
+        return "I'm having trouble thinking right now. Please check back in a moment or contact the school office."
 
 @app.route("/")
 def home():
