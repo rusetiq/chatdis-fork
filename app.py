@@ -9,7 +9,10 @@ app = Flask(__name__)
 
 # AI Setup
 api_key = os.getenv("API_KEY")
-genai.configure(api_key=api_key)
+if api_key:
+    genai.configure(api_key=api_key)
+else:
+    print("CRITICAL: No API Key found!")
 
 # 1. FIX: Updated path for knowledge_base.md in root folder
 kb_path = "knowledge_base.md"
@@ -29,10 +32,9 @@ def search_knowledge_base(query):
 def ai_generate_answer(question, context):
     if not api_key:
         return "System Error: API Key missing in Vercel settings."
-    
-    # 2. FIX: Removed the double 'try' blocks that caused the SyntaxError
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash-latest')
+        # Using the standard stable name
+        model = genai.GenerativeModel('gemini-1.5-flash')
         
         prompt = f"""
         You are ChatDIS, the official assistant for Dunes International School.
@@ -44,16 +46,21 @@ def ai_generate_answer(question, context):
         {question}
         
         INSTRUCTIONS:
-        1. Answer the question using the context above.
-        2. If info is missing, be helpful but mention it's a general answer.
-        3. Be polite and welcoming (Dunes style!).
+        1. Answer based on the context.
+        2. Be polite and professional.
         """
         
         response = model.generate_content(prompt)
         return response.text
     except Exception as e:
-        return f"AI Error: {str(e)}"
-
+        # If 1.5-flash still fails, try the older stable pro model as a backup
+        try:
+            model = genai.GenerativeModel('gemini-pro')
+            response = model.generate_content(prompt)
+            return response.text
+        except:
+            return f"AI Error: {str(e)}"
+            
 @app.route("/")
 def home():
     return render_template("index.html")
