@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.chatbox {
+    background: white;
+    width: 420px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#chat {
+    min-height: 160px;
+    margin-bottom: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.subtitle {
+    font-size: 13px;
+    color: gray;
+    margin-top: -10px;
+}
+
+.disclaimer {
+    font-size: 11px;
+    color: gray;
+    margin-top: 10px;
+}
