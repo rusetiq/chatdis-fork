@@ -5,7 +5,7 @@ import google.generativeai as genai
 
 load_dotenv()
 
-app = Flask(__name__, template_folder='../templates', static_folder='../static')
+app = Flask(__name__)
 
 # AI Setup
 api_key = os.getenv("API_KEY")
