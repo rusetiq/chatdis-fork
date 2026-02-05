@@ -1,65 +1,41 @@
+import os
 from flask import Flask, request, jsonify, render_template
 from dotenv import load_dotenv
-import os
 import google.generativeai as genai
 
-# Load environment variables
 load_dotenv()
 
-genai.configure(api_key=os.getenv("API_KEY"))
+app = Flask(__name__, template_folder='../templates', static_folder='../static')
 
-app = Flask(__name__, 
-            template_folder='../templates', 
-            static_folder='../static')
+# AI Setup
+api_key = os.getenv("API_KEY")
+genai.configure(api_key=api_key)
 
+# Load Knowledge Base safely
 base_path = os.path.dirname(__file__)
 kb_path = os.path.join(base_path, "..", "knowledge_base.md")
-
-# Load knowledge base
-with open("knowledge_base.md", "r", encoding="utf-8") as f:
-    KNOWLEDGE_BASE = f.read()
+try:
+    with open(kb_path, "r", encoding="utf-8") as f:
+        KNOWLEDGE_BASE = f.read()
+except:
+    KNOWLEDGE_BASE = "Error: Knowledge base file not found."
 
 def search_knowledge_base(query):
     keywords = query.lower().split()
-    relevant_lines = []
-    for line in KNOWLEDGE_BASE.split("\n"):
-        for word in keywords:
-            if word in line.lower():
-                relevant_lines.append(line)
-                break
+    relevant_lines = [line for line in KNOWLEDGE_BASE.split("\n") 
+                      if any(word in line.lower() for word in keywords)]
     return "\n".join(relevant_lines[:15])
 
 def ai_generate_answer(question, context):
-    """
-    This function sends the prompt to the real Gemini AI.
-    """
+    if not api_key:
+        return "System Error: API Key missing in Vercel settings."
     try:
         model = genai.GenerativeModel('gemini-1.5-flash')
-        
-        # We give the AI a "Persona" so it knows it's at Dunes
-        prompt = f"""
-        You are ChatDIS, the official digital assistant for Dunes International School. 
-        Use the following verified school information to answer the user's question.
-        
-        SCHOOL INFORMATION:
-        {context}
-        
-        USER QUESTION: 
-        {question}
-        
-        INSTRUCTIONS:
-        - Be polite, professional, and welcoming.
-        - Use "Dunes International School" context.
-        - If the information is not in the context, politely say you don't know and suggest contacting the school office.
-        - Keep the answer concise.
-        """
-        
+        prompt = f"Using this info: {context}. Answer this: {question}. Be a helpful Dunes School assistant."
         response = model.generate_content(prompt)
         return response.text
-        
     except Exception as e:
-        print(f"AI Error: {e}")
-        return "I'm having trouble thinking right now. Please check back in a moment or contact the school office."
+        return f"AI Error: {str(e)}" # This will tell us EXACTLY why it's failing
 
 @app.route("/")
 def home():
@@ -68,19 +44,11 @@ def home():
 @app.route("/ask", methods=["POST"])
 def ask():
     user_question = request.json.get("question", "").strip()
-    if not user_question:
-        return jsonify({"answer": "Please enter a question."})
     relevant_info = search_knowledge_base(user_question)
+    
+    # If search fails to find anything in the .md file
     if not relevant_info.strip():
-        return jsonify({"answer": "I don’t have that information. Please contact the school office."})
+        return jsonify({"answer": "I couldn't find specific details on that. Please ask the school office!"})
+
     answer = ai_generate_answer(user_question, relevant_info)
     return jsonify({"answer": answer})
-
-if __name__ == "__main__":
-    print("--- ChatDIS Server Starting ---")
-    print("Go to http://127.0.0.1:5000 in your browser")
-    app.run(debug=True)
-
-
-if __name__ == "__main__":
-    app.run()
