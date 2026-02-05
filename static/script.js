@@ -38,20 +38,23 @@ async function askQuestion() {
 
         const data = await response.json();
 
-        // 6. Find the thinking bubble and replace its content with the real answer
+        // 6. Find the thinking bubble
         const thinkingBubble = document.getElementById(thinkingId);
         
         // Remove the 'thinking' class to stop the pulse animation
         thinkingBubble.classList.remove("thinking");
         
-        // Use innerHTML and replace newlines with <br> for better formatting
-        thinkingBubble.innerHTML = data.answer.replace(/\n/g, '<br>');
+        // --- THE BIG CHANGE IS HERE ---
+        // Instead of .replace(), we use marked.parse() to handle bold, tables, and lists properly
+        thinkingBubble.innerHTML = marked.parse(data.answer);
 
     } catch (error) {
         // If it fails, update the thinking bubble with the error message
         const thinkingBubble = document.getElementById(thinkingId);
-        thinkingBubble.classList.remove("thinking");
-        thinkingBubble.innerHTML = "Sorry, I'm having trouble connecting right now.";
+        if (thinkingBubble) {
+            thinkingBubble.classList.remove("thinking");
+            thinkingBubble.innerHTML = "Sorry, I'm having trouble connecting right now.";
+        }
     }
 
     // Final scroll to bottom
