@@ -10,7 +10,6 @@
 body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--dunes-beige);
-    max-width: 1000px;
     margin: 0;
     display: flex;
     justify-content: center;
