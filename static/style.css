@@ -1,8 +1,8 @@
 /* Dunes International School - ChatDIS Brand Theme */
 :root {
-    --dunes-red: #690B13;       /* Primary Dark Red */
-    --dunes-light-red: #FAACA8; /* Soft Accent Red */
-    --dunes-beige: #FCF0EF;     /* Background Linen */
+    --dunes-red: #690B13;       /* Dark Red */
+    --dunes-light-red: #FAACA8; /* Light Red */
+    --dunes-beige: #F5F5DC /* Try #FCF0EF; is current on is not good     /* Background beige */
     --white: #ffffff;
     --text-dark: #333333;
 }
@@ -164,7 +164,6 @@ button:hover {
     padding: 10px;
 }
 
-/* The pulse animation */
 @keyframes thinkingPulse {
     0% { opacity: 0.5; }
     50% { opacity: 1; }
@@ -173,17 +172,17 @@ button:hover {
 
 .thinking {
     font-style: italic;
-    background-color: #f0f0f0 !important; /* Slightly different color while thinking */
+    background-color: #f0f0f0 !important;
     animation: thinkingPulse 1.5s infinite ease-in-out;
 }
 
-/* Optional: Make the bot message handle line breaks properly */
+/* Markdown styling */
+
 .bot-message {
     line-height: 1.5;
     word-wrap: break-word;
 }
 
-/* Styling for Markdown Tables */
 .bot-message table {
     width: 100%;
     border-collapse: collapse;
@@ -203,7 +202,6 @@ button:hover {
     color: white;
 }
 
-/* Styling for Markdown Lists */
 .bot-message ul, .bot-message ol {
     margin-left: 20px;
     margin-bottom: 10px;
