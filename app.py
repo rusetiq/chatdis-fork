@@ -9,7 +9,6 @@ load_dotenv()
 app = Flask(__name__)
 
 # OpenRouter Setup
-# Make sure to rename your variable in Vercel to OPENROUTER_API_KEY
 api_key = os.getenv("OPENROUTER_API_KEY")
 
 # Load Knowledge Base
@@ -24,7 +23,6 @@ def ai_generate_answer(question, context):
     if not api_key:
         return "System Error: OpenRouter API Key missing."
 
-    # This is the "Brain" of the AI. We need to make it strong!
     system_instruction = f"""
     You are ChatDIS, the official and friendly AI assistant for Dunes International School (DIS), Abu Dhabi.
     
@@ -53,7 +51,7 @@ def ai_generate_answer(question, context):
                     {"role": "system", "content": system_instruction},
                     {"role": "user", "content": question}
                 ],
-                "temperature": 0.3 # Lower temperature makes the AI more factual and less "creative"
+                "temperature": 0.3
             })
         )
         
@@ -70,7 +68,7 @@ def home():
 @app.route("/ask", methods=["POST"])
 def ask():
     user_question = request.json.get("question", "").strip()
-    # We pass the full KNOWLEDGE_BASE as context
+    # Pass the full KNOWLEDGE_BASE as context
     answer = ai_generate_answer(user_question, KNOWLEDGE_BASE)
     return jsonify({"answer": answer})
 
