@@ -51,7 +51,7 @@ def ai_generate_answer(question, context):
                     {"role": "system", "content": system_instruction},
                     {"role": "user", "content": question}
                 ],
-                "temperature": 0.3
+                "temperature": 0.5
             })
         )
         
