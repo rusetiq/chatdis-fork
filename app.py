@@ -44,21 +44,29 @@ def ai_generate_answer(question, context):
             url="https://openrouter.ai/api/v1/chat/completions",
             headers={
                 "Authorization": f"Bearer {api_key}",
-                "HTTP-Referer": "https://chatdis-ai.vercel.app/", 
                 "Content-Type": "application/json",
             },
-            data=json.dumps({
-                "model": "google/gemini-2.0-flash-001", 
-                "messages": [
+            json={
+                    "model": "google/gemini-2.0-flash-001",
+            "messages": [
                     {"role": "system", "content": system_instruction},
                     {"role": "user", "content": question}
                 ],
                 "temperature": 0.5
-            })
+            }
         )
-        
+
+        # Check HTTP status first
+        if response.status_code != 200:
+            return f"API Error {response.status_code}: {response.text}"
+
         result = response.json()
-        return result['choices'][0]['message']['content']
+
+        # Debug fallback: show full result if structure unexpected
+        if "choices" not in result:
+            return f"Unexpected API response: {result}"
+
+        return result["choices"][0]["message"]["content"]
 
     except Exception as e:
         return f"Connection Error: {str(e)}"
