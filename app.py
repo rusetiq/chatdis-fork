@@ -11,6 +11,10 @@ app = Flask(__name__)
 
 # Ollama Setup
 api_key = os.getenv("OLLAMA_API_KEY")  # Make sure this is set in Vercel
+headers = {
+    "Authorization": f"Bearer {api_key}",
+    "Content-Type": "application/json",
+}
 
 # Ollama Cloud API endpoint
 OLLAMA_API_URL = "https://ollama.com/api/chat"  # Chat completion endpoint
