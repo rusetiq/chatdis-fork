@@ -78,7 +78,7 @@ def home():
 @app.route("/ask", methods=["POST"])
 @limiter.limit("5 per minute")
 def ask():
-    # 🔐 Check API key from CLIENT request
+    # Check API key from CLIENT request
     client_key = request.headers.get("x-api-key")
 
     if client_key != CHATDIS_SECRET_KEY:
