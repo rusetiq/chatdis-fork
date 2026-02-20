@@ -1,4 +1,4 @@
-"""
+
 import os
 import requests
 from flask import Flask, request, jsonify, render_template, abort
@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
 
 
-
+"""
 
 
 
@@ -211,7 +211,7 @@ def ask():
 if __name__ == "__main__":
     app.run(debug=True)
 
-"""
+""
 
 
 
