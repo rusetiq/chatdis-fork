@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, render_template, abort, send_from_dir
 from dotenv import load_dotenv
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from flask_cors import CORS
+
 from datetime import datetime
 from functools import wraps
 
@@ -12,9 +12,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
-allowed_origins = [o.strip() for o in allowed_origins if o.strip()]
-CORS(app, origins=allowed_origins if allowed_origins else ["*"])
+
 
 limiter = Limiter(get_remote_address, app=app, default_limits=["10 per minute"])
 
